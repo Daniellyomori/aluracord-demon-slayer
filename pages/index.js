@@ -77,6 +77,7 @@ export default function PaginaInicial() {
                                 const valor = event.target.value;
                                 //Trocar valor da variável
                                 setUsername(valor);
+
                             }}
                             fullWidth
                             textFieldColors={{
