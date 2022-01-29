@@ -46,7 +46,7 @@ export default function PaginaErro() {
                         backgroundColor: appConfig.theme.colors.neutrals[700],
                     }}
                 >
-                    <Titulo tag="h2" alignItems='center'>QUE QUE VOCÊ TÁ FAZENDO NESSA PÁGINA?!?!?!</Titulo>
+                    <Titulo tag="h2" alignItems='center'>Você não é bem vindo aqui! ¯\_(ツ)_/¯</Titulo>
                 </Box>
 
             </Box>
