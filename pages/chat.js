@@ -1,22 +1,46 @@
 import { Box, Text, TextField, Image, Button } from '@skynexui/components';
 import React from 'react';
 import appConfig from '../config.json';
+import { createClient } from '@supabase/supabase-js'
+
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTY0MzM5MDk1NCwiZXhwIjoxOTU4OTY2OTU0fQ.iryb1yT8HWYrAGZ9p5QJGSV6ZNe0_id1_jrrL4DCoTM';
+const SUPABASE_URL = 'https://yvrtkgmzxhpgkizdujpc.supabase.co';
+const supabaseClient = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
 
 export default function ChatPage() {
     const [mensagem, setMensagem] = React.useState('');
     const [listaDeMensagem, setListaDeMensagem] = React.useState([]);
 
+    React.useEffect(() => {
+        supabaseClient
+            .from('mensagens')
+            .select('*')
+            .order('id', { ascending: false })
+            .then(({ data }) => {
+                console.log('Dados da consulta: ', data);
+                setListaDeMensagem(data)
+            })
+    }, []);
+
     function handleNovaMensagem(novaMensagem) {
         const mensagem = {
             texto: novaMensagem,
             de: 'daniellyomori',
-            id: listaDeMensagem.length + 1,
         }
 
-        setListaDeMensagem([
-            mensagem,
-            ...listaDeMensagem,
-        ]);
+        supabaseClient
+            .from('mensagens')
+            .insert([
+                mensagem
+            ])
+            .then(({ data }) => {
+                setListaDeMensagem([
+                    data[0],
+                    ...listaDeMensagem,
+                ]);
+            });
+
         setMensagem('');
     }
 
@@ -175,7 +199,7 @@ function MessageList(props) {
                                     display: 'inline-block',
                                     marginRight: '8px',
                                 }}
-                                src={`https://github.com/daniellyomori.png`}
+                                src={`https://github.com/${mensagem.de}.png`}
                             />
                             <Text tag="strong">
                                 {mensagem.de}
